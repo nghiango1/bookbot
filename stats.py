@@ -7,12 +7,12 @@ def get_book_text(path_to_file):
         return file_contents
 
 
-def get_book_number_of_words(file_contents):
+def get_number_of_words(file_contents):
     num_words = len(file_contents.split())
     return num_words
 
 
-def count_book_characters(file_contents):
+def get_chars_dict(file_contents):
     counter = defaultdict(int)
     for c in file_contents:
         counter[c.lower()] += 1
@@ -24,7 +24,7 @@ def sort_on(dict):
     return dict["count"]
 
 
-def sort_characters_count(counter):
+def chars_dict_to_sorted_list(counter):
     characters = []
     for c in counter:
         characters.append({"character": c, "count": counter[c]})
