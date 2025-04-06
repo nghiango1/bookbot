@@ -1,8 +1,8 @@
-from stats import get_book_number_of_words
+from stats import count_book_characters
 
 
 def main():
-    print(get_book_number_of_words("books/frankenstein.txt"))
+    print(count_book_characters("books/frankenstein.txt"))
 
 
 main()
