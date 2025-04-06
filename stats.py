@@ -9,7 +9,7 @@ def get_book_text(path_to_file):
 
 def get_book_number_of_words(file_contents):
     num_words = len(file_contents.split())
-    return f"{num_words} words found in the document"
+    return num_words
 
 
 def count_book_characters(file_contents):
@@ -18,3 +18,15 @@ def count_book_characters(file_contents):
         counter[c.lower()] += 1
 
     return counter
+
+
+def sort_on(dict):
+    return dict["count"]
+
+
+def sort_characters_count(counter):
+    characters = []
+    for c in counter:
+        characters.append({"character": c, "count": counter[c]})
+    characters.sort(reverse=True, key=sort_on)
+    return characters
