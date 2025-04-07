@@ -53,13 +53,14 @@ def main():
         updatable_group.update(dt)
 
         check_collision = False
-        for thing in asteroids_group:
-            if thing.is_collision(player):
+        for asteroid in asteroids_group:
+            if asteroid.is_collision(player):
                 check_collision = True
                 break
             for bullet in shots_group:
-                if thing.is_collision(bullet):
-                    thing.kill()
+                if asteroid.is_collision(bullet):
+                    asteroid.split()
+                    asteroid.kill()
                     bullet.kill()
                     break
 
