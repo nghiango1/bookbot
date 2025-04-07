@@ -1,7 +1,7 @@
 import pygame
 
 from asteroids.circleshape import CircleShape
-from asteroids.constants import PLAYER_RADIUS
+from asteroids.constants import PLAYER_RADIUS, PLAYER_TURN_SPEED
 
 
 # Class for game player objects
@@ -15,8 +15,12 @@ class Player(CircleShape):
         pygame.draw.polygon(screen, "white", points, width=2)
 
     def update(self, dt):
-        # sub-classes must override
-        pass
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -25,3 +29,6 @@ class Player(CircleShape):
         b = self.position - forward * self.radius - right
         c = self.position - forward * self.radius + right
         return [a, b, c]
+
+    def rotate(self, dt):
+        self.rotation += PLAYER_TURN_SPEED * dt
