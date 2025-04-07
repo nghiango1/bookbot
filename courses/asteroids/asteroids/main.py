@@ -50,7 +50,18 @@ def main():
         updatable_group.update(dt)
         for thing in drawable_group:
             thing.draw(screen)
+        check_collision = False
+        for thing in asteroids_group:
+            if thing.is_collision(player):
+                check_collision = True
+                break
+
         pygame.display.flip()
+        if check_collision:
+            print("Game over!")
+            break
+
+    pygame.quit()
 
 
 if __name__ == "__main__":
