@@ -1,5 +1,9 @@
 # Asteroids
 
+## Development
+
+### Project `pyproject.toml` setup
+
 Hard, I just have a black screen and that it running python directly in Nixos
 
 - I follow guide for package python, which place in [nixos special](../../nixos/)
@@ -54,3 +58,28 @@ To run the game like a command however (as I doesn't have scripts field currentl
   ```
 
 - Modify all of the import, yep, this is required to follow packaged module import
+
+### Nix environment
+
+Create development environment that should similar to `pip install -e` install evironment. We will have support for `__main__.py` to run the game
+
+```sh
+nix-shell
+python -m asteroids
+```
+
+Or build as nix's python package directly, we then can directly use `project.scripts` as executable that nix-build will modify to include the correct `pygame` import dependancy
+
+```sh
+nix-build
+./result/bin/asteroids
+```
+
+## Publishing
+
+After quite some time and finish the implementation, I switched the project name and publish it to Pypi (so other can use `pip install` to run the project directly).
+
+```sh
+python -m build
+python -m twine upload -r pypi dist/*
+```

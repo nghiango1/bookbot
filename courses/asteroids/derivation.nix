@@ -6,6 +6,8 @@ buildPythonApplication {
 
   format = "pyproject";
   propagatedBuildInputs = [
+    build
+    twine
     pygame
     setuptools
   ];
