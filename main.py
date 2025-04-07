@@ -1,36 +1,30 @@
-import sys
-
-from stats import (
-    chars_dict_to_sorted_list,
-    get_book_text,
-    get_chars_dict,
-    get_number_of_words,
+# this allows us to use code from
+# the open-source pygame library
+# throughout this file
+import pygame
+from constants import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    ASTEROID_KINDS,
+    ASTEROID_MIN_RADIUS,
+    ASTEROID_SPAWN_RATE,
+    ASTEROID_MAX_RADIUS,
 )
 
 
-def print_report(book_path, num_words, sorted_list):
-    print("============ BOOKBOT ============")
-    print(f"Analyzing book found at {book_path}...")
-    print("----------- Word Count ----------")
-    print(f"Found {num_words} total words")
-    print("--------- Character Count -------")
-    for info in sorted_list:
-        if not info["character"].isalpha():
-            continue
-        print(f'{info["character"]}: {info["count"]}')
-    print("============= END ===============")
-
-
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python3 main.py <path_to_book>")
-        sys.exit(1)
-    book_path = sys.argv[1]
-    text = get_book_text(book_path)
-    num_words = get_number_of_words(text)
-    chars_dict = get_chars_dict(text)
-    sorted_list = chars_dict_to_sorted_list(chars_dict)
-    print_report(book_path, num_words, sorted_list)
+    print("Starting Asteroids!")
+    print(f"Screen width: {SCREEN_WIDTH}")
+    print(f"Screen height: {SCREEN_HEIGHT}")
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+
+        screen.fill("black")
 
 
-main()
+if __name__ == "__main__":
+    main()
