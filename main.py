@@ -2,14 +2,16 @@
 # the open-source pygame library
 # throughout this file
 import pygame
+
 from constants import (
-    SCREEN_WIDTH,
-    SCREEN_HEIGHT,
     ASTEROID_KINDS,
+    ASTEROID_MAX_RADIUS,
     ASTEROID_MIN_RADIUS,
     ASTEROID_SPAWN_RATE,
-    ASTEROID_MAX_RADIUS,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
 )
+from player import Player
 
 
 def main():
@@ -18,12 +20,23 @@ def main():
     print(f"Screen height: {SCREEN_HEIGHT}")
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    clock = pygame.time.Clock()
+    dt = 0
+
+    x = SCREEN_WIDTH / 2
+    y = SCREEN_HEIGHT / 2
+    player = Player(x, y)
+
     while True:
+        miliseconds_pass = clock.tick(60)
+        seconds_pass = miliseconds_pass / 1000
+        dt = seconds_pass
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
 
         screen.fill("black")
+        player.draw(screen)
 
 
 if __name__ == "__main__":
