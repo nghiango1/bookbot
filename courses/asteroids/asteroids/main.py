@@ -37,6 +37,7 @@ def main():
 
         screen.fill("black")
         player.draw(screen)
+        pygame.display.flip()
 
 
 if __name__ == "__main__":
