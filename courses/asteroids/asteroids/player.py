@@ -6,6 +6,7 @@ from asteroids.constants import (
     PLAYER_SHOOT_SPEED,
     PLAYER_SPEED,
     PLAYER_TURN_SPEED,
+    PLAYER_SHOOT_COOLDOWN,
 )
 from asteroids.shot import Shot
 
@@ -15,6 +16,7 @@ class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.shoot_cd = 0
 
     def draw(self, screen):
         points = self.triangle()
@@ -22,6 +24,9 @@ class Player(CircleShape):
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
+        self.shoot_cd -= dt
+        if self.shoot_cd < 0:
+            self.shoot_cd = 0
 
         if keys[pygame.K_a]:
             self.rotate(-dt)
@@ -52,6 +57,9 @@ class Player(CircleShape):
         self.position += forward_vector * distance
 
     def shoot(self, dt):
+        if self.shoot_cd > 0:
+            return
+        self.shoot_cd = PLAYER_SHOOT_COOLDOWN
         shot = Shot(self.position.x, self.position.y)
         forward_vector = pygame.Vector2(0, 1).rotate(self.rotation)
 

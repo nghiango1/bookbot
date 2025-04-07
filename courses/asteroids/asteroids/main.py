@@ -51,14 +51,20 @@ def main():
 
         screen.fill("black")
         updatable_group.update(dt)
-        for thing in drawable_group:
-            thing.draw(screen)
+
         check_collision = False
         for thing in asteroids_group:
             if thing.is_collision(player):
                 check_collision = True
                 break
+            for bullet in shots_group:
+                if thing.is_collision(bullet):
+                    thing.kill()
+                    bullet.kill()
+                    break
 
+        for thing in drawable_group:
+            thing.draw(screen)
         pygame.display.flip()
         if check_collision:
             print("Game over!")
