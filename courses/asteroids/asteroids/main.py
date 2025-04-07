@@ -41,8 +41,7 @@ def main():
                 return
 
         screen.fill("black")
-        for thing in updatable_group:
-            thing.update(dt)
+        updatable_group.update(dt)
         for thing in drawable_group:
             thing.draw(screen)
         pygame.display.flip()
