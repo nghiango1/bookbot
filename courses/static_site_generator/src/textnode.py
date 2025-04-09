@@ -1,17 +1,18 @@
 from enum import Enum
+from typing import Optional
 
 
 class TextType(Enum):
-    NORMAL_TEXT = "normal_text"  # Normal text
-    BOLD_TEXT = "bold_text"  # **Bold text**
-    ITALIC_TEXT_ = "italic_text"  # _Italic text_
-    CODE_TEXT = "code_text"  # `Code text`
+    NORMAL = "normal"  # Normal text
+    BOLD = "bold"  # **Bold text**
+    ITALIC_ = "italic"  # _Italic text_
+    CODE = "code"  # `Code text`
     LINKS = "link"  # Links, in this format: [anchor text](url)
     IMAGES = "images"  # Images, in this format: ![alt text](url)
 
 
 class TextNode:
-    def __init__(self, text: str, text_type: TextType, url: str):
+    def __init__(self, text: str, text_type: TextType, url: Optional[str] = None):
         # The text content of the node
         self.text = text
 
