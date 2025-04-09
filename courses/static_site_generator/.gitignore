@@ -1,1 +1,3 @@
 __pycache__/
+dist/
+nghiango_static_site_generator.egg-info/
