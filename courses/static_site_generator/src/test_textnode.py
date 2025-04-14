@@ -83,6 +83,43 @@ class TestTextNodeIntergration(unittest.TestCase):
         self.assertEqual(html_node.value, "This is a code node")
 
     def test_split_nodes_delimiter(self):
+        node = TextNode(
+            "This is text with a ***bold and italic block*** word", TextType.NORMAL
+        )
+        # Use *** with no text type define
+        exception = None
+        try:
+            new_nodes = split_nodes_delimiter([node], "***")
+        except Exception as e:
+            exception = e
+        self.assertIsNotNone(
+            exception, "Can use none undefined *** delimiter without error"
+        )
+
+        node = TextNode("This is text with a `code block` word", TextType.NORMAL)
+        # Use ` with TextType.Bold
+        new_nodes = split_nodes_delimiter([node], "`")
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("This is text with a ", TextType.NORMAL),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+
+        node = TextNode("This is text with a `code block` word", TextType.NORMAL)
+        # Use ` with TextType.Bold
+        new_nodes = split_nodes_delimiter([node], "`", TextType.BOLD)
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("This is text with a ", TextType.NORMAL),
+                TextNode("code block", TextType.BOLD),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+
         node = TextNode("This is text with a `code block` word", TextType.NORMAL)
         new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
         self.assertListEqual(
@@ -98,7 +135,7 @@ class TestTextNodeIntergration(unittest.TestCase):
             "_This is italic_, while this is **bold text** with a `code block` word",
             TextType.NORMAL,
         )
-        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        new_nodes = split_nodes_delimiter([node], "`")
         self.assertListEqual(
             new_nodes,
             [
@@ -110,7 +147,7 @@ class TestTextNodeIntergration(unittest.TestCase):
                 TextNode(" word", TextType.NORMAL),
             ],
         )
-        new_nodes_2 = split_nodes_delimiter(new_nodes, "_", TextType.CODE)
+        new_nodes_2 = split_nodes_delimiter(new_nodes, "_")
         self.assertListEqual(
             new_nodes_2,
             [
@@ -120,7 +157,7 @@ class TestTextNodeIntergration(unittest.TestCase):
                 TextNode(" word", TextType.NORMAL),
             ],
         )
-        new_nodes_3 = split_nodes_delimiter(new_nodes_2, "**", TextType.CODE)
+        new_nodes_3 = split_nodes_delimiter(new_nodes_2, "**")
         self.assertListEqual(
             new_nodes_3,
             [

@@ -37,7 +37,7 @@ class TextNode:
 
 
 def split_nodes_delimiter(
-    old_nodes: List[TextNode], delimiter: str, text_type: TextType
+    old_nodes: List[TextNode], delimiter: str, text_type: Optional[TextType] = None
 ):
     assert isinstance(old_nodes, List)
     for node in old_nodes:
@@ -60,12 +60,20 @@ def split_nodes_delimiter(
                     new_nodes.append(TextNode(text, TextType.NORMAL))
                 continue
 
+            if text_type:
+                new_nodes.append(TextNode(text, text_type))
+                continue
+
             if delimiter == "`":
                 new_nodes.append(TextNode(text, TextType.CODE))
             elif delimiter == "**":
                 new_nodes.append(TextNode(text, TextType.BOLD))
             elif delimiter == "_":
                 new_nodes.append(TextNode(text, TextType.ITALIC))
+            else:
+                raise ValueError(
+                    f"Delimiter {delimiter} is unknow for any supported text type, must define it directly through `text_type` instead"
+                )
 
     return new_nodes
 
