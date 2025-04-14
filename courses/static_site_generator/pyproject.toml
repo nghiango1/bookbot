@@ -1,6 +1,6 @@
 [project]
 name = "nghiango-static-site-generator"
-version = "0.2.6"
+version = "0.3.1"
 
 [build-system]
 requires = ["setuptools"]

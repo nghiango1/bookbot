@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode, TextType
+from textnode import TextNode, TextType, text_node_to_html_node, split_nodes_delimiter
 
 
 class TestTextNode(unittest.TestCase):
@@ -42,19 +42,21 @@ class TestTextNode(unittest.TestCase):
             self.assertNotEqual(node.url, None)
             self.assertNotEqual(node, node2)
 
+
+class TestTextNodeIntergration(unittest.TestCase):
     def test_text(self):
         node = TextNode("This is a text node", TextType.NORMAL)
-        html_node = TextNode.text_node_to_html_node(node)
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "This is a text node")
 
         node = TextNode("This is a bold node", TextType.BOLD)
-        html_node = TextNode.text_node_to_html_node(node)
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "b")
         self.assertEqual(html_node.value, "This is a bold node")
 
         node = TextNode("This is a image node", TextType.IMAGES, "public/hello.png")
-        html_node = TextNode.text_node_to_html_node(node)
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "img")
         self.assertEqual(html_node.value, "")
         self.assertNotEqual(html_node.props, None)
@@ -65,7 +67,7 @@ class TestTextNode(unittest.TestCase):
         )
 
         node = TextNode("This is a link node", TextType.LINKS, "#")
-        html_node = TextNode.text_node_to_html_node(node)
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "a")
         self.assertEqual(html_node.value, "This is a link node")
         self.assertNotEqual(html_node.props, None)
@@ -76,9 +78,77 @@ class TestTextNode(unittest.TestCase):
         )
 
         node = TextNode("This is a code node", TextType.CODE)
-        html_node = TextNode.text_node_to_html_node(node)
+        html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "code")
         self.assertEqual(html_node.value, "This is a code node")
+
+    def test_split_nodes_delimiter(self):
+        node = TextNode("This is text with a `code block` word", TextType.NORMAL)
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode("This is text with a ", TextType.NORMAL),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+
+        node = TextNode(
+            "_This is italic_, while this is **bold text** with a `code block` word",
+            TextType.NORMAL,
+        )
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+        self.assertListEqual(
+            new_nodes,
+            [
+                TextNode(
+                    "_This is italic_, while this is **bold text** with a ",
+                    TextType.NORMAL,
+                ),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+        new_nodes_2 = split_nodes_delimiter(new_nodes, "_", TextType.CODE)
+        self.assertListEqual(
+            new_nodes_2,
+            [
+                TextNode("This is italic", TextType.ITALIC),
+                TextNode(", while this is **bold text** with a ", TextType.NORMAL),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+        new_nodes_3 = split_nodes_delimiter(new_nodes_2, "**", TextType.CODE)
+        self.assertListEqual(
+            new_nodes_3,
+            [
+                TextNode("This is italic", TextType.ITALIC),
+                TextNode(", while this is ", TextType.NORMAL),
+                TextNode("bold text", TextType.BOLD),
+                TextNode(" with a ", TextType.NORMAL),
+                TextNode("code block", TextType.CODE),
+                TextNode(" word", TextType.NORMAL),
+            ],
+        )
+
+        node = TextNode("This is text with a `code block` word", TextType.NORMAL)
+        exception = None
+        try:
+            # Not List
+            new_nodes = split_nodes_delimiter(node, "`", TextType.CODE)
+        except Exception as e:
+            exception = e
+        self.assertIsNotNone(exception, "Can use none List[TextNode] type as input")
+
+        exception = None
+        try:
+            # Not TextNode
+            new_nodes = split_nodes_delimiter(["string"], "`", TextType.CODE)
+        except Exception as e:
+            exception = e
+        self.assertIsNotNone(exception, "Can use none List[TextNode] type as input")
 
 
 if __name__ == "__main__":
