@@ -42,6 +42,44 @@ class TestTextNode(unittest.TestCase):
             self.assertNotEqual(node.url, None)
             self.assertNotEqual(node, node2)
 
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.NORMAL)
+        html_node = TextNode.text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+
+        node = TextNode("This is a bold node", TextType.BOLD)
+        html_node = TextNode.text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "b")
+        self.assertEqual(html_node.value, "This is a bold node")
+
+        node = TextNode("This is a image node", TextType.IMAGES, "public/hello.png")
+        html_node = TextNode.text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.value, "")
+        self.assertNotEqual(html_node.props, None)
+        assert html_node.props is not None
+        self.assertDictEqual(
+            html_node.props,
+            {"alt": "This is a image node", "src": "public/hello.png"},
+        )
+
+        node = TextNode("This is a link node", TextType.LINKS, "#")
+        html_node = TextNode.text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "a")
+        self.assertEqual(html_node.value, "This is a link node")
+        self.assertNotEqual(html_node.props, None)
+        assert html_node.props is not None
+        self.assertDictEqual(
+            html_node.props,
+            {"href": "#"},
+        )
+
+        node = TextNode("This is a code node", TextType.CODE)
+        html_node = TextNode.text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "code")
+        self.assertEqual(html_node.value, "This is a code node")
+
 
 if __name__ == "__main__":
     unittest.main()

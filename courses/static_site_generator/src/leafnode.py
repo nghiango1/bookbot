@@ -1,9 +1,11 @@
-from typing import Optional
+from typing import Optional, Dict
 from htmlnode import HTMLNode
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag: Optional[str], value: str, props=None):
+    def __init__(
+        self, tag: Optional[str], value: str, props: Optional[Dict[str, str]] = None
+    ):
         super(LeafNode, self).__init__(tag, value, None, props)
         assert self.value is not None
 

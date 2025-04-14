@@ -1,17 +1,44 @@
 from enum import Enum
 from typing import Optional
+from leafnode import LeafNode
 
 
 class TextType(Enum):
     NORMAL = "normal"  # Normal text
     BOLD = "bold"  # **Bold text**
-    ITALIC_ = "italic"  # _Italic text_
+    ITALIC = "italic"  # _Italic text_
     CODE = "code"  # `Code text`
     LINKS = "link"  # Links, in this format: [anchor text](url)
     IMAGES = "images"  # Images, in this format: ![alt text](url)
 
 
 class TextNode:
+    @staticmethod
+    def text_node_to_html_node(textnode):
+        if not isinstance(textnode, TextNode):
+            raise ValueError(f"Not valid TextNode, got {textnode}")
+        match textnode.text_type:
+            case TextType.BOLD:
+                return LeafNode("b", textnode.text)
+            case TextType.ITALIC:
+                return LeafNode("i", textnode.text)
+            case TextType.CODE:
+                return LeafNode("code", textnode.text)
+            case TextType.LINKS:
+                props = None
+                if textnode.url:
+                    props = {"href": textnode.url}
+                return LeafNode("a", textnode.text, props)
+            case TextType.IMAGES:
+                props = {"alt": textnode.text}
+                if textnode.url:
+                    props["src"] = textnode.url
+                return LeafNode("img", "", props)
+            case TextType.NORMAL:
+                return LeafNode(None, textnode.text)
+            case _:
+                raise ValueError(f"Not valid TextType, got {textnode.text_type}")
+
     def __init__(self, text: str, text_type: TextType, url: Optional[str] = None):
         # The text content of the node
         self.text = text
