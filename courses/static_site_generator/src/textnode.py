@@ -1,6 +1,8 @@
 from enum import Enum
+import re
 from typing import Optional, List
 from leafnode import LeafNode
+from utils import extract_markdown_links, extract_markdown_images
 
 
 class TextType(Enum):
@@ -76,6 +78,63 @@ def split_nodes_delimiter(
                 )
 
     return new_nodes
+
+
+def _split_nodes_regex(
+    old_nodes: List[TextNode], partern: str | re.Pattern[str], text_type: TextType
+):
+    """Use for image and link regex, with 2 string partern"""
+    assert isinstance(old_nodes, List)
+    for node in old_nodes:
+        assert isinstance(node, TextNode)
+
+    new_nodes: List[TextNode] = []
+    for node in old_nodes:
+        if node.text_type != TextType.NORMAL:
+            new_nodes.append(node)
+            continue
+
+        curr_texts = node.text
+        while curr_texts:
+            split_texts = re.split(partern, curr_texts, maxsplit=1)
+
+            if len(split_texts) == 1:
+                # No image/links found, end the process
+                break
+
+            assert (
+                len(split_texts) >= 3
+            ), f"Not expect split_texts length, got {len(split_texts)}. Recheck image and url regex partern"
+
+            new_nodes.append(TextNode(split_texts[0], TextType.NORMAL))
+            new_nodes.append(
+                TextNode(
+                    split_texts[1],
+                    text_type,
+                    url=split_texts[2],
+                )
+            )
+            split_texts = split_texts[3:]
+
+            assert (
+                len(split_texts) <= 1
+            ), f"Not expect split_texts length, got {len(split_texts)}. Recheck image and url regex partern"
+
+            if split_texts:
+                curr_texts = split_texts[0]
+
+        if curr_texts:
+            new_nodes.append(TextNode(curr_texts, TextType.NORMAL))
+
+    return new_nodes
+
+
+def split_nodes_image(old_nodes: List[TextNode]):
+    return _split_nodes_regex(old_nodes, r"!\[(.*?)\]\((.*?)\)", TextType.IMAGES)
+
+
+def split_nodes_link(old_nodes: List[TextNode]):
+    return _split_nodes_regex(old_nodes, r"\[(.*?)\]\((.*?)\)", TextType.LINKS)
 
 
 def text_node_to_html_node(textnode: TextNode):

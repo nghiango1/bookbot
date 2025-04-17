@@ -1,6 +1,13 @@
 import unittest
 
-from textnode import TextNode, TextType, text_node_to_html_node, split_nodes_delimiter
+from textnode import (
+    TextNode,
+    TextType,
+    text_node_to_html_node,
+    split_nodes_delimiter,
+    split_nodes_link,
+    split_nodes_image,
+)
 
 
 class TestTextNode(unittest.TestCase):
@@ -186,6 +193,69 @@ class TestTextNodeIntergration(unittest.TestCase):
         except Exception as e:
             exception = e
         self.assertIsNotNone(exception, "Can use none List[TextNode] type as input")
+
+    def test_split_links(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+            TextType.NORMAL,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with a link ", TextType.NORMAL),
+                TextNode("to boot dev", TextType.LINKS, "https://www.boot.dev"),
+                TextNode(" and ", TextType.NORMAL),
+                TextNode(
+                    "to youtube", TextType.LINKS, "https://www.youtube.com/@bootdotdev"
+                ),
+            ],
+            new_nodes,
+        )
+
+        # Both images and links use the same logic, no need for many test
+
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+            TextType.NORMAL,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with an ", TextType.NORMAL),
+                TextNode("image", TextType.IMAGES, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" and another ", TextType.NORMAL),
+                TextNode(
+                    "second image", TextType.IMAGES, "https://i.imgur.com/3elNhQu.png"
+                ),
+            ],
+            new_nodes,
+        )
+
+        node = TextNode(
+            "This is text with a single ![image](https://i.imgur.com/zjjcJKZ.png)",
+            TextType.NORMAL,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with a single ", TextType.NORMAL),
+                TextNode("image", TextType.IMAGES, "https://i.imgur.com/zjjcJKZ.png"),
+            ],
+            new_nodes,
+        )
+
+        node = TextNode(
+            "This is text with no image",
+            TextType.NORMAL,
+        )
+        new_nodes = split_nodes_image([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with no image", TextType.NORMAL),
+            ],
+            new_nodes,
+        )
 
 
 if __name__ == "__main__":
