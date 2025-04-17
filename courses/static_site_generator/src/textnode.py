@@ -2,7 +2,6 @@ from enum import Enum
 import re
 from typing import Optional, List
 from leafnode import LeafNode
-from utils import extract_markdown_links, extract_markdown_images
 
 
 class TextType(Enum):
@@ -161,3 +160,12 @@ def text_node_to_html_node(textnode: TextNode):
             return LeafNode(None, textnode.text)
         case _:
             raise ValueError(f"Not valid TextType, got {textnode.text_type}")
+
+
+def text_to_textnodes(text: str):
+    bold_nodes = split_nodes_delimiter([TextNode(text, TextType.NORMAL)], "**")
+    italic_nodes = split_nodes_delimiter(bold_nodes, "_")
+    code_nodes = split_nodes_delimiter(italic_nodes, "`")
+    image_nodes = split_nodes_image(code_nodes)
+    link_nodes = split_nodes_link(image_nodes)
+    return link_nodes
