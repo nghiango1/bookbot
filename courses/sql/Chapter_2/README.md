@@ -57,3 +57,19 @@ Expected it to be the same with this table
 | 3   | age      | INTEGER | 0       |            | 0   |
 | 4   | balance  | INTEGER | 0       |            | 0   |
 | 5   | is_admin | BOOLEAN | 0       |            | 0   |
+
+## Lession 2: Creating table practice
+
+In most relational databases a single table isn't enough to hold all the data we need! We usually create a table-per-entity
+
+Assigment: Create the `transactions` table with the following fields:
+
+- `id` - Integer
+- `recipient_id` - Integer
+- `sender_id` - Integer
+- `note` - Text
+- `amount` - Integer
+
+```sh
+run CH2-L02-CREATE-2.sql
+```
