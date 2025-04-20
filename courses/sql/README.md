@@ -60,3 +60,22 @@ While I using `posgresql`, the course use `SQLite`. There should be some differe
 
 Now: Select all of the `ids`, `names`, and `is_admin` flags from the `users` table.
 
+### Lession 4: NoSQL vs SQL
+
+Let look at what I have meet:
+
+- SQL: Oracle (DB), PostgresSQL, MySQL/MariaDB, SQLite, (Microsoft) SQL Server
+- NoSQL:
+
+  - Redis: Key-Value store (mostly using for caching user session as it run on RAM)
+  - MongoDB: Json Documents store (we use it to store image :/)
+
+More example:
+
+- ElasticSearch
+- Firebase: DB as a service providing by Google for quickly implement Application
+- Cassandra: Discord moment, ditributed DB
+
+SQL is more general purposed, while No SQL tend to serve as specific solution with some competitive edge over traditional storing method (MongoDB can be stand out as a general purposed DB too ...hmm...)
+
+> Each NoSQL Database tends to use _different_ query language(s)
