@@ -48,4 +48,8 @@ INSERT 0 1
 
 ```
 
-### Lession 2: ...
+### Lession 2: SELECT again
+
+Single and multi field select, Just stop using `*` and remember to have `;` at the end of each statement.
+
+Now: Requested a report asking for all the `names` and `balances` of all of our `users`. Complete `CH1-L02-SELECT-2.sql` file
