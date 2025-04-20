@@ -1,14 +1,6 @@
-# SQL - Structure query language
+# Chapter 1: Introduction
 
-Create CashPal with SQL:
-
-- To moving data from one place (UI) into otheres place (Database)
-- SQL is the language to communicate with (Relational) Database, to bringing data in and out
-- Just a better Excel without using API
-
-## Chapter 1: Introduction
-
-### Lession 1: What is SQL?
+## Lession 1: What is SQL?
 
 While it great to have the friendly `run` UI, we may want to setup our own local for later progress in guess mode. I setup some basic local SQL development with Posgress here
 
@@ -64,7 +56,7 @@ source ../.alias
 run CH1-L01-SELECT.sql
 ```
 
-### Lession 2: SELECT again
+## Lession 2: SELECT again
 
 Single and multi field select, Just stop using `*` and remember to have `;` at the end of each statement.
 
@@ -74,7 +66,7 @@ Now: Requested a report asking for all the `names` and `balances` of all of our 
 run CH1-L02-SELECT-2.sql
 ```
 
-### Lession 3: Database's SQL is different
+## Lession 3: Database's SQL is different
 
 While I using `posgresql`, the course use `SQLite`. There should be some different
 
@@ -84,7 +76,7 @@ Now: Select all of the `ids`, `names`, and `is_admin` flags from the `users` tab
 run CH1-L03-SELECT-3.sql
 ```
 
-### Lession 4-6: NoSQL vs SQL
+## Lession 4-6: NoSQL vs SQL
 
 Let look at what I have meet:
 
@@ -108,7 +100,7 @@ SQL is more general purposed, while No SQL tend to serve as specific solution wi
 > - _SQL_ compatible databases tend to be more similar in their functionality than _NoSQL_ databases
 > - Which type of database always uses table structures? SQL
 
-### Lession 7: Comparing
+## Lession 7: Comparing
 
 While there is a lot of SQL database, we only care about these two:
 
