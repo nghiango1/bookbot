@@ -78,5 +78,8 @@ More example:
 
 SQL is more general purposed, while No SQL tend to serve as specific solution with some competitive edge over traditional storing method (MongoDB can be stand out as a general purposed DB too ...hmm...)
 
-> Each NoSQL Database tends to use _different_ query language(s)
-> _SQL_ compatible databases tend to be more similar in their functionality than _NoSQL_ databases
+> Quiz time:
+>
+> - Each NoSQL Database tends to use _different_ query language(s)
+> - _SQL_ compatible databases tend to be more similar in their functionality than _NoSQL_ databases
+> - Which type of database always uses table structures? SQL
