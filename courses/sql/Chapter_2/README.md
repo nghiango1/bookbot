@@ -1,6 +1,6 @@
 # Chapter 2: Table
 
-## Lession 1: Creating a table
+## Lesson 1: Creating a table
 
 Example command:
 
@@ -58,7 +58,7 @@ Expected it to be the same with this table
 | 4   | balance  | INTEGER | 0       |            | 0   |
 | 5   | is_admin | BOOLEAN | 0       |            | 0   |
 
-## Lession 2: Creating table practice
+## Lesson 2: Creating table practice
 
 In most relational databases a single table isn't enough to hold all the data we need! We usually create a table-per-entity
 
@@ -74,7 +74,7 @@ Assigment: Create the `transactions` table with the following fields:
 run CH2-L02-CREATE-2.sql
 ```
 
-## Lession 3: Altering tables
+## Lesson 3: Altering tables
 
 Alter table lession:
 
@@ -142,4 +142,73 @@ BEGIN
     ORDER BY cid;
 END;
 $$ LANGUAGE plpgsql;
+```
+
+```sh
+# Side quest function
+run ../TABLE_INFO.sql
+
+# Assigment using TABLE_INFO() function
+run CH2-L03-ALTER_TABLE.sql
+```
+
+## Lesson 4-6: Intro to Migrations
+
+A database migration is a set of changes to a relational database, adapting it to new requirement (or just fixing bug really)
+
+We dealing with the structure of data, which generally:
+
+- Avoid big change, we modify a lot of internal data here
+- Adding new column: Is safe for the application, it take a lot of time though, but code should be fine
+- Delete: expect it will break anything that depend on the data, code will break need to update imediately.
+- Update: The same thing vs Delete, could be really dramatic if we reusing feild, which code may behave in not expected way. Data will be at risk thoughm as we changing them, and it may unreverse-able (There is a case that we using Oracle DB, that because it support 15 mins reverse the UPDATE change, so we can fix the thing)
+
+In my profesional time, we mostly:
+
+- Copy the full database, versionning them base from application version
+- Alternative/Migrating the copy database, runing new code with the new database's table
+- This allowing rollback the last version way way easier
+- We don't really drop old version at all thought
+
+Up-Down migration type: When writing **reversible** migrations, we use the terms "up" and "down" migrations
+
+- Up: mean forward migration change. For example: Create table, Add Col, Rename Col
+- Down: mean reverse migration change, it come in pair with each up version. To rollback the above example, we do: Rename back col, Delete Col, Delete Table
+
+Quiz time:
+
+- Which of the following statements about migrations is FALSE? You can be fast and loose when writing migrations - a bad migration is easy to fix
+- Will database migrations often be coupled with application code updates? Yes
+- Why are 'good' migrations written in a reversible manner? So that if something goes wrong, the changes can be rolled back
+
+## Lesson 7-8: Up/Down Migration Practice
+
+Lesson 7's Assignment: Just another Alter table, we call these change up migration though.
+
+- Add the BOOLEAN was_successful column to the transactions table.
+- Add the TEXT transaction_type column to the transactions table.
+
+```sql
+ALTER TABLE transactions
+ADD COLUMN was_successful BOOLEAN;
+
+ALTER TABLE transactions
+ADD COLUMN transaction_type TEXT;
+```
+
+Lesson 8's Assignment: Then imedietly reverse the migration that we just did
+
+- Drop the was_successful column from the transactions table.
+- Drop the transaction_type column from the transactions table.
+
+```sql
+ALTER TABLE transactions
+DROP COLUMN was_successful;
+
+ALTER TABLE transactions
+DROP COLUMN transaction_type;
+```
+
+```sh
+run CH2-L07-L08-UP_DOWN_MIGRATION.sql
 ```
