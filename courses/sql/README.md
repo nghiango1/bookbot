@@ -10,3 +10,18 @@ Quick reference link:
 
 - [Chapter 1: Introduction](./Chapter_1/)
 - [Chapter 2: Table](./Chapter_2/)
+
+Side quest:
+
+- Alias for running `*.sql` using NixOS's Posgresql install instance [.alias](.alias)
+
+```sh
+. .alias
+```
+
+- Alternative PL/pgSQL function for checking `table_info` similar to SQLite from boot.dev [TABLE_INFO.sql](TABLE_INFO.sql)
+
+```sh
+. .alias
+run TABLE_INFO.sql
+```

@@ -73,3 +73,73 @@ Assigment: Create the `transactions` table with the following fields:
 ```sh
 run CH2-L02-CREATE-2.sql
 ```
+
+## Lession 3: Altering tables
+
+Alter table lession:
+
+- Rename table, column
+- Add/Drop a column: Each column must be added in a separate ALTER TABLE command
+
+```sql
+ALTER TABLE <name>
+RENAME TO <new_name>
+RENAME COLUMN <col_name> TO <new_col_name>;
+
+ALTER TABLE <name>
+ADD COLUMN <col_name> TEXT;
+
+ALTER TABLE <name>
+DROP COLUMN <col_name>;
+```
+
+The Assignment is simple enough
+
+```sql
+-- Assignment
+
+-- 1. Rename the table to users
+ALTER TABLE people
+RENAME TO users;
+
+-- 2. Rename the tag column to username.
+ALTER TABLE users
+RENAME COLUMN tag TO username;
+
+-- 3. Add the password (TEXT) column.
+ALTER TABLE users
+ADD COLUMN password TEXT;
+```
+
+So I done aditional side quest here, which is to reduce the need to place the full alternative query for `TABLE_INFO()`:
+
+- Create a PL/SQL function that will return the table_info query result
+- We then use the mini-fy function call to show the result using one line `SELECT * FROM TABLE_INFO(<table_name>)`
+
+```sql
+CREATE OR REPLACE FUNCTION TABLE_INFO(p_table_name TEXT)
+RETURNS TABLE (
+    cid INTEGER,
+    name TEXT,
+    type TEXT,
+    notnull INTEGER,
+    dflt_value TEXT,
+    pk INTEGER
+) AS $$
+BEGIN
+    PERFORM QUERY
+    SELECT
+        ordinal_position - 1 as cid,
+        column_name::TEXT as name,
+        upper(data_type) as type,
+        (is_nullable = 'NO')::INTEGER as notnull,
+        column_default::TEXT as dflt_value,
+        (is_identity <> 'NO')::INTEGER as pk
+    FROM
+        information_schema.columns
+    WHERE
+        table_name = p_table_name
+    ORDER BY cid;
+END;
+$$ LANGUAGE plpgsql;
+```
