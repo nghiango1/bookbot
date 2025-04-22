@@ -212,3 +212,82 @@ DROP COLUMN transaction_type;
 ```sh
 run CH2-L07-L08-UP_DOWN_MIGRATION.sql
 ```
+
+## Lesson 9: Down Migration Review
+
+Up migration:
+
+```sql
+ALTER TABLE transactions
+ADD COLUMN was_successful BOOLEAN;
+
+ALTER TABLE transactions
+ADD COLUMN transaction_type TEXT;
+```
+
+Down migration:
+
+```sql
+ALTER TABLE transactions
+DROP COLUMN was_successful;
+
+ALTER TABLE transactions
+DROP COLUMN transaction_type;
+```
+
+Quiz time:
+
+- The second block of code is a down migration because it \_\_\_\_. reverts a previous up migration
+
+## Lesson 10-12: SQL Data Types
+
+SQLite type introduction:
+
+- `NULL` - Null value.
+- `INTEGER` - A signed integer stored in 0,1,2,3,4,6, or 8 bytes.
+- `REAL` - Floating point value stored as an 64-bit IEEE floating point number.
+- `TEXT` - Text string stored using database encoding such as UTF-8
+- `BLOB` - Short for Binary large object and typically used for images, audio or other multimedia.
+- `BOOLEAN` - Boolean values are written in SQLite queries as `true` or `false`, but are recorded as `1` or `0`.
+
+> SQLite still let you write your queries using boolean expressions and true/false keywords, but it will convert the booleans to integers under-the-hood.
+
+On my side, with PostgreSQL, it too complicated (cover all SQLite provided type plus more) and does support Boolean with `t/f` value (don't expect `1/0` in the record).
+
+Quiz time:
+
+- How is a 'true' boolean value stored and presented in SQLite? 1
+- All SQL databases support the same datatypes? False
+- What type would you use to store a user's email? TEXT
+
+It quite interesting that I seeing TEXT as a type, normally I will saw `VARCHAR(100)` for specific string length. It also normal for me as a programer to understand the structure that record will be store (eg: 100 bytes for the `VARCHAR(100)` string field), TEXT without any limit literally mean the string is store else where to be, just like BLOB
+
+## Lesson 13: Posts Table
+
+`CREATE TABLE` again, create `posts` table: Prepare for CashPal's latest social media feature named "CashPal Chatter", which aims to revolutionize financial discussions online
+
+```sql
+CREATE TABLE post (
+-- id
+-- image_url
+-- description
+-- author_id
+-- is_sponsored
+);
+```
+
+Notes: Well, string in PostgreSQL need `''` (single quote) encapsulation. Using `""` is a big no no, we will bee throw with this error
+
+```
+psql:CH2-L13-CREATE-3.sql:14: ERROR:  column "posts" does not exist
+LINE 1: SELECT * FROM TABLE_INFO("posts");
+```
+
+Finish this with new `.sql` file:
+
+- I messed up `author_id` with `TEXT`, just can't see the `id` part
+- "For ID columns, assume we can just use INTEGER." here is what the description said
+
+```sh
+run CH2-L13-CREATE-3.sql
+```
