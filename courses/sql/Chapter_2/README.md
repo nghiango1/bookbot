@@ -291,3 +291,17 @@ Finish this with new `.sql` file:
 ```sh
 run CH2-L13-CREATE-3.sql
 ```
+
+## Lesson 14: Posts Table Migration
+
+`ALTER TALBE` practice: CashPal chatter is a huge hit! After several weeks of use, the engineers at CashPal have decided that some changes need to be made to our posts table
+
+Assignment: Write an up migration for the posts table that achieves the following:
+
+- The author_id column should be renamed to poster_id
+- Add a new column named is_edited with a BOOLEAN type
+- DROP the is_sponsored column
+
+```sh
+run CH2-L14-ALTER_TABLE-2.sql
+```
