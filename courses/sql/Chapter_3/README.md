@@ -66,3 +66,66 @@ A primary key is a special column that uniquely identifies records within a tabl
 > Ehh, I belive we can set two column as a primary key
 
 Assignment: Fixing wrong `INSERT INTO`
+
+Result:
+
+```sh
+run CH3_L03_INSERT_INTO.sql
+```
+
+## Lesson 4: Foreign Keys
+
+Foreign keys define the relationships between tables. Bring the relational to relational databases.
+
+We will need to and `CONSTRAINT` to define the `FOREIGN KEY` and its `REFERENCES`, either:
+
+- Through `CREATE TABLE`:
+
+```sql
+CREATE TABLE departments (
+    id INTEGER PRIMARY KEY,
+    department_name TEXT NOT NULL
+);
+
+CREATE TABLE employees (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    department_id INTEGER,
+    CONSTRAINT fk_departments
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+);
+```
+
+- Through `ALTER TABLE`: Look at Lesson 2 on `ADD CONSTRAINT`- SQLite doesn't support this operation though, Added side quest
+
+```sql
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  age INTEGER,
+  country_code TEXT NOT NULL,
+  username TEXT ,
+  password TEXT,
+  is_admin BOOLEAN
+);
+
+ALTER TABLE users
+-- ADD CONSTRAINT
+ADD FOREIGN KEY (country_code) REFERENCES countries(code);
+```
+
+> After added `FOREIGN KEY`, we can't drop the table `countries` as `users` will depended on it. Thus, we need to drop `users` table first
+
+Assignment: Blah, Blah, `INSERT INTO` need fix, error message is as bellow
+
+```
+psql:CH3_L04_INSERT_INTO_2.sql:57: ERROR:  insert or update on table "users" violates foreign key constraint "users_country_code_fkey"
+DETAIL:  Key (country_code)=(IND) is not present in table "countries".
+```
+
+Result:
+
+```sh
+run CH3_L04_INSERT_INTO_2.sql
+```
