@@ -51,3 +51,18 @@ My last assumntion about `pk` key is wrong (a non related field from `informatio
 - Update our original `TABLE_INFO` to use new helper BOOLEAN function. It suppridingly easy though, and behave exactly like any other operation (or builtin function call)
 
 > `DROP FUNCTION` is use, as I messed up the type a lot, which make `CREATE OR REPLACE` failed to overide the previously created `FUNCTION`
+
+## Lesson 3: Primary Keys
+
+A key defines and protects relationships between tables.
+
+A primary key is a special column that uniquely identifies records within a table. Each table can have one, and only one primary key.
+
+- It's very common to have a column named `id` on each table in a database
+- And, that `id` is the primary key for that table.
+- No two rows in that table can share an `id`.
+- A `PRIMARY KEY` constraint can be explicitly specified on a column to ensure uniqueness, rejecting any inserts where you attempt to create a duplicate ID.
+
+> Ehh, I belive we can set two column as a primary key
+
+Assignment: Fixing wrong `INSERT INTO`
