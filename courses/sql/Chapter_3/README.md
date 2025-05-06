@@ -152,3 +152,25 @@ Result:
 ```sh
 run CH3_L05_CREATE_TABLE.sql
 ```
+
+## Lesson 6-7: Relational Databases
+
+Now we detail into the _relational_ database actually mean? It store data (database) and its/their related to other data (relational)
+
+The example is just how `id` and `constraint` referenced work
+
+Quiz time:
+
+- How many courses is Sam enrolled in? 3
+- How many students are in the ASP.NET MVC course? 1
+
+## Lesson 8: Relational vs. Non-Relational Databases
+
+Ehm, it typically seen that non-relational stored nested object (eg: JSON), thus it could seach for relation directly within a "record". This may result into a dublicate data thought
+
+Relational database tent to seperate it infomation to diferent, structured table, which prevent data doublication.
+
+Quiz time:
+
+- \_**\_ databases often duplicate data, while \_\_** databases typically don't. (Non-relational, relational)
+- Non relational databases connect similar entities by using \_\_\_\_ . (Nested data)
