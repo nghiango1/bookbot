@@ -19,7 +19,7 @@ BEGIN
             FROM
                 information_schema.table_constraints
             WHERE
-                table_name = 'users'
+                table_name = p_table_name
         ) AS b
     ON
         b.constraint_name = a.constraint_name
