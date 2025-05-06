@@ -129,3 +129,26 @@ Result:
 ```sh
 run CH3_L04_INSERT_INTO_2.sql
 ```
+
+## Lesson 5: Schema
+
+Database's schema describes how data is organized within it.
+
+Assignment: Create the transactions table with the following fields and constraints:
+
+- `id` - `INTEGER` `PRIMARY KEY`
+- `sender_id` - `INTEGER`
+- `recipient_id` - `INTEGER`
+- `memo` - `TEXT` - `NOT NULL`
+- `amount` - `INTEGER` - `NOT NULL`
+- `balance` - `INTEGER` - `NOT NULL`
+
+> It turn out that my last side quest still have a litte bug, where I use `users` directly instead of using function parameter `p_table_name TEXT`
+>
+> Which the `pk` field return `0` instead of `1` for `id` column of `transactions` table through `TABLE_INFO(transactions)`
+
+Result:
+
+```sh
+run CH3_L05_CREATE_TABLE.sql
+```
